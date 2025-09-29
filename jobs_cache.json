@@ -1,0 +1,90 @@
+{
+  "timestamp": "2025-08-17T14:38:56.539070",
+  "jobs": [
+    {
+      "title": "Software Engineer",
+      "company": "Tech Solutions Inc",
+      "location": "Mumbai, Maharashtra",
+      "experience": "2-5 years",
+      "salary": "5-8 LPA",
+      "skills": [
+        "python",
+        "django",
+        "rest api",
+        "postgresql",
+        "git"
+      ],
+      "description": "Looking for a skilled software engineer with Python and Django experience",
+      "qualification": "BTech/BE in Computer Science",
+      "job_id": 1
+    },
+    {
+      "title": "Full Stack Developer",
+      "company": "Digital Innovations",
+      "location": "Bangalore, Karnataka",
+      "experience": "3-6 years",
+      "salary": "8-12 LPA",
+      "skills": [
+        "react",
+        "node.js",
+        "javascript",
+        "mongodb",
+        "express"
+      ],
+      "description": "Full stack developer role with modern web technologies",
+      "qualification": "BTech/MCA in relevant field",
+      "job_id": 2
+    },
+    {
+      "title": "Data Scientist",
+      "company": "Analytics Corp",
+      "location": "Pune, Maharashtra",
+      "experience": "2-4 years",
+      "salary": "6-10 LPA",
+      "skills": [
+        "python",
+        "machine learning",
+        "pandas",
+        "scikit-learn",
+        "sql"
+      ],
+      "description": "Data scientist position focusing on ML and analytics",
+      "qualification": "MTech/MS in Data Science or related",
+      "job_id": 3
+    },
+    {
+      "title": "DevOps Engineer",
+      "company": "Cloud Systems Ltd",
+      "location": "Hyderabad, Telangana",
+      "experience": "3-7 years",
+      "salary": "9-15 LPA",
+      "skills": [
+        "aws",
+        "docker",
+        "kubernetes",
+        "jenkins",
+        "terraform"
+      ],
+      "description": "DevOps engineer for cloud infrastructure management",
+      "qualification": "BTech in Computer Science or related",
+      "job_id": 4
+    },
+    {
+      "title": "Frontend Developer",
+      "company": "UI/UX Studios",
+      "location": "Chennai, Tamil Nadu",
+      "experience": "1-4 years",
+      "salary": "4-7 LPA",
+      "skills": [
+        "react",
+        "javascript",
+        "css",
+        "html",
+        "typescript"
+      ],
+      "description": "Frontend developer for responsive web applications",
+      "qualification": "BTech/BCA in relevant field",
+      "job_id": 5
+    }
+  ]
+}

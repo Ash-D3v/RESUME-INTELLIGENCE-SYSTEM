@@ -1,0 +1,84 @@
+{
+  "analytics": [
+    {
+      "timestamp": "2025-08-15T19:21:09.043092",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-15T19:27:07.331306",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-15T19:28:10.464488",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-16T12:40:38.002496",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-16T12:43:07.779845",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-16T12:56:53.726625",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-17T14:39:55.219627",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-17T16:22:27.962793",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-08-18T05:42:45.463059",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    },
+    {
+      "timestamp": "2025-09-29T14:34:57.441935",
+      "skills_count": 27,
+      "has_contact": true,
+      "has_education": true,
+      "has_experience": false,
+      "has_projects": false
+    }
+  ]
+}
