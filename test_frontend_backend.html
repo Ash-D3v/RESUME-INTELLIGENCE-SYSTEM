@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #2196F3;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .error {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .loading {
+            color: #FF9800;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        pre {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .job-card, .course-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .job-card h3, .course-card h3 {
+            margin-top: 0;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 Frontend-Backend Connection Test</h1>
+        
+        <div class="test-section">
+            <h2>Backend Status</h2>
+            <p>Backend URL: <strong>http://localhost:8000</strong></p>
+            <p id="backend-status" class="loading">Checking...</p>
+            <button onclick="testBackendHealth()">Test Backend Health</button>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Job Matching</h2>
+            <button onclick="testJobs()">Fetch Jobs (Python, JavaScript)</button>
+            <div id="jobs-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Course Recommendations</h2>
+            <button onclick="testCourses()">Fetch Courses (Python)</button>
+            <div id="courses-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Resume Scoring</h2>
+            <button onclick="testScoring()">Test ATS Scoring</button>
+            <div id="scoring-result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Raw API Response</h2>
+            <button onclick="showRawResponse()">Show Raw JSON</button>
+            <pre id="raw-response"></pre>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+
+        // Test backend health
+        async function testBackendHealth() {
+            const statusEl = document.getElementById('backend-status');
+            statusEl.className = 'loading';
+            statusEl.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (data.status === 'healthy') {
+                    statusEl.className = 'success';
+                    statusEl.textContent = '✅ Backend is HEALTHY and responding!';
+                } else {
+                    statusEl.className = 'error';
+                    statusEl.textContent = '❌ Backend responded but status is: ' + data.status;
+                }
+            } catch (error) {
+                statusEl.className = 'error';
+                statusEl.textContent = '❌ Cannot connect to backend: ' + error.message;
+            }
+        }
+
+        // Test jobs endpoint
+        async function testJobs() {
+            const resultEl = document.getElementById('jobs-result');
+            resultEl.innerHTML = '<p class="loading">Fetching jobs...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/jobs?skills=python,javascript`);
+                const jobs = await response.json();
+                
+                if (jobs.length === 0) {
+                    resultEl.innerHTML = '<p class="error">❌ No jobs returned (empty array)</p>';
+                    return;
+                }
+                
+                let html = `<p class="success">✅ Found ${jobs.length} jobs!</p>`;
+                jobs.slice(0, 3).forEach(job => {
+                    html += `
+                        <div class="job-card">
+                            <h3>${job.title}</h3>
+                            <p><strong>Company:</strong> ${job.company}</p>
+                            <p><strong>Location:</strong> ${job.location}</p>
+                            <p><strong>Relevance:</strong> ${job.relevance}%</p>
+                            <p><strong>Skills:</strong> ${job.requiredSkills.join(', ')}</p>
+                        </div>
+                    `;
+                });
+                resultEl.innerHTML = html;
+            } catch (error) {
+                resultEl.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // Test courses endpoint
+        async function testCourses() {
+            const resultEl = document.getElementById('courses-result');
+            resultEl.innerHTML = '<p class="loading">Fetching courses...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/courses?skills=python`);
+                const data = await response.json();
+                
+                let html = '<p class="success">✅ Courses fetched successfully!</p>';
+                
+                // Handle both object and array responses
+                if (typeof data === 'object') {
+                    const courses = data.python || Object.values(data)[0] || [];
+                    
+                    courses.slice(0, 3).forEach(course => {
+                        html += `
+                            <div class="course-card">
+                                <h3>${course.title}</h3>
+                                <p><strong>Provider:</strong> ${course.provider}</p>
+                                <p><strong>Level:</strong> ${course.level}</p>
+                                <p><strong>Duration:</strong> ${course.duration}</p>
+                                <p><strong>Rating:</strong> ${course.rating}</p>
+                            </div>
+                        `;
+                    });
+                }
+                
+                resultEl.innerHTML = html;
+            } catch (error) {
+                resultEl.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // Test scoring endpoint
+        async function testScoring() {
+            const resultEl = document.getElementById('scoring-result');
+            resultEl.innerHTML = '<p class="loading">Testing ATS scoring...</p>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/score`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        resume_text: 'Software Engineer with 3 years experience in Python, JavaScript, React, and Node.js. Built scalable web applications.',
+                        job_description: 'Looking for a Full Stack Developer with Python and JavaScript experience.'
+                    })
+                });
+                
+                const scores = await response.json();
+                
+                resultEl.innerHTML = `
+                    <p class="success">✅ ATS Scoring working!</p>
+                    <div class="job-card">
+                        <h3>Scores</h3>
+                        <p><strong>Overall Score:</strong> ${scores.overallScore}/100</p>
+                        <p><strong>Structure Score:</strong> ${scores.structureScore}/100</p>
+                        <p><strong>Keyword Score:</strong> ${scores.keywordScore}/100</p>
+                        <p><strong>Format Score:</strong> ${scores.formatScore}/100</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultEl.innerHTML = `<p class="error">❌ Error: ${error.message}</p>`;
+            }
+        }
+
+        // Show raw response
+        async function showRawResponse() {
+            const resultEl = document.getElementById('raw-response');
+            resultEl.textContent = 'Fetching...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/jobs?skills=python`);
+                const data = await response.json();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Auto-test on load
+        window.onload = function() {
+            testBackendHealth();
+        };
+    </script>
+</body>
+</html>

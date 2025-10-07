@@ -358,7 +358,10 @@ async def get_course_recommendations(skills: str = Query(..., description="Comma
         # Get course recommendations
         course_recommendations = course_recommender.get_course_recommendations(skill_list)
         
-        return JSONResponse(status_code=200, content=course_recommendations)
+        # Convert Course objects to dictionaries
+        converted_recommendations = convert_courses_to_dicts(course_recommendations)
+        
+        return JSONResponse(status_code=200, content=converted_recommendations)
         
     except Exception as e:
         logger.error(f"Error getting course recommendations: {str(e)}")
