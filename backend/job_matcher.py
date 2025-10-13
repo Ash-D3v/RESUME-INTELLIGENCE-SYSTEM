@@ -145,7 +145,7 @@ class JobMatcher:
     
 
     
-    def calculate_relevance_score(self, user_skills: List[str], job_skills: List[str], use_ml: bool = True) -> float:
+    def calculate_relevance_score(self, user_skills: List[str], job_skills: List[str], use_ml: bool = False) -> float:
         """Calculate relevance score between user skills and job requirements"""
         if not job_skills or not user_skills:
             return 0.0
@@ -193,6 +193,11 @@ class JobMatcher:
         if not self.jobs_data:
             self._fetch_jobs_from_dataset()
         
+        # If still no data after fetch, use fallback mock data
+        if not self.jobs_data:
+            logger.warning("No job data available, using fallback mock data")
+            self.jobs_data = self._get_fallback_jobs()
+        
         if not user_skills:
             return []
         
@@ -201,7 +206,7 @@ class JobMatcher:
         for job in self.jobs_data:
             relevance_score = self.calculate_relevance_score(user_skills, job['skills'])
             
-            if relevance_score > 10:  # Minimum relevance threshold
+            if relevance_score > 5:  # Minimum relevance threshold (lowered for better matching)
                 matching_job = {
                     'title': job['title'],
                     'company': job['company'],
@@ -222,6 +227,121 @@ class JobMatcher:
         matching_jobs.sort(key=lambda x: x['relevance'], reverse=True)
         
         return matching_jobs[:limit]
+    
+    def _get_fallback_jobs(self) -> List[Dict[str, Any]]:
+        """Provide fallback mock jobs when external dataset is unavailable"""
+        return [
+            {
+                'title': 'Senior Python Developer',
+                'company': 'Tech Innovations Inc',
+                'location': 'Mumbai, Maharashtra',
+                'experience': '3-5 years',
+                'salary': '15-25 LPA',
+                'skills': ['python', 'django', 'flask', 'postgresql', 'docker', 'aws', 'rest api'],
+                'description': 'We are looking for an experienced Python developer to join our team. You will be responsible for building scalable backend services.',
+                'qualification': 'BTech/BE in Computer Science or related field',
+                'job_id': 1001
+            },
+            {
+                'title': 'Full Stack JavaScript Developer',
+                'company': 'Digital Solutions Ltd',
+                'location': 'Bangalore, Karnataka',
+                'experience': '2-4 years',
+                'salary': '12-20 LPA',
+                'skills': ['javascript', 'react', 'node.js', 'express', 'mongodb', 'typescript', 'git'],
+                'description': 'Join our dynamic team to build modern web applications using the latest JavaScript technologies.',
+                'qualification': 'BTech/MCA in relevant field',
+                'job_id': 1002
+            },
+            {
+                'title': 'Data Scientist',
+                'company': 'Analytics Pro',
+                'location': 'Pune, Maharashtra',
+                'experience': '2-5 years',
+                'salary': '18-30 LPA',
+                'skills': ['python', 'machine learning', 'pandas', 'numpy', 'scikit-learn', 'tensorflow', 'sql', 'data visualization'],
+                'description': 'Work on cutting-edge ML projects and help drive data-driven decision making.',
+                'qualification': 'MTech/MS in Data Science, Statistics, or related field',
+                'job_id': 1003
+            },
+            {
+                'title': 'DevOps Engineer',
+                'company': 'Cloud Systems Corp',
+                'location': 'Hyderabad, Telangana',
+                'experience': '3-6 years',
+                'salary': '16-28 LPA',
+                'skills': ['aws', 'docker', 'kubernetes', 'jenkins', 'terraform', 'linux', 'python', 'ci/cd'],
+                'description': 'Manage and optimize our cloud infrastructure and deployment pipelines.',
+                'qualification': 'BTech in Computer Science or equivalent',
+                'job_id': 1004
+            },
+            {
+                'title': 'Frontend React Developer',
+                'company': 'UI/UX Innovations',
+                'location': 'Chennai, Tamil Nadu',
+                'experience': '1-3 years',
+                'salary': '8-15 LPA',
+                'skills': ['react', 'javascript', 'html', 'css', 'typescript', 'redux', 'tailwindcss'],
+                'description': 'Create beautiful and responsive user interfaces for our web applications.',
+                'qualification': 'BTech/BCA in relevant field',
+                'job_id': 1005
+            },
+            {
+                'title': 'Backend Java Developer',
+                'company': 'Enterprise Solutions',
+                'location': 'Gurgaon, Haryana',
+                'experience': '4-7 years',
+                'salary': '20-35 LPA',
+                'skills': ['java', 'spring boot', 'microservices', 'sql', 'kafka', 'redis', 'aws'],
+                'description': 'Design and develop enterprise-grade backend systems using Java and Spring.',
+                'qualification': 'BTech/MTech in Computer Science',
+                'job_id': 1006
+            },
+            {
+                'title': 'Machine Learning Engineer',
+                'company': 'AI Research Labs',
+                'location': 'Bangalore, Karnataka',
+                'experience': '3-6 years',
+                'salary': '25-40 LPA',
+                'skills': ['python', 'tensorflow', 'pytorch', 'deep learning', 'nlp', 'computer vision', 'aws', 'mlops'],
+                'description': 'Build and deploy state-of-the-art ML models for production systems.',
+                'qualification': 'MTech/PhD in Machine Learning, AI, or related field',
+                'job_id': 1007
+            },
+            {
+                'title': 'Mobile App Developer (React Native)',
+                'company': 'Mobile First Tech',
+                'location': 'Mumbai, Maharashtra',
+                'experience': '2-4 years',
+                'salary': '12-22 LPA',
+                'skills': ['react native', 'javascript', 'typescript', 'ios', 'android', 'redux', 'firebase'],
+                'description': 'Develop cross-platform mobile applications for iOS and Android.',
+                'qualification': 'BTech/BE in Computer Science',
+                'job_id': 1008
+            },
+            {
+                'title': 'Cloud Architect',
+                'company': 'Cloud Native Solutions',
+                'location': 'Pune, Maharashtra',
+                'experience': '5-8 years',
+                'salary': '30-50 LPA',
+                'skills': ['aws', 'azure', 'gcp', 'kubernetes', 'terraform', 'microservices', 'system design'],
+                'description': 'Design and implement scalable cloud architectures for enterprise clients.',
+                'qualification': 'BTech/MTech with cloud certifications',
+                'job_id': 1009
+            },
+            {
+                'title': 'QA Automation Engineer',
+                'company': 'Quality Assurance Inc',
+                'location': 'Noida, Uttar Pradesh',
+                'experience': '2-5 years',
+                'salary': '10-18 LPA',
+                'skills': ['selenium', 'python', 'java', 'javascript', 'cypress', 'api testing', 'ci/cd'],
+                'description': 'Build and maintain automated testing frameworks for web and mobile applications.',
+                'qualification': 'BTech/BE in Computer Science',
+                'job_id': 1010
+            }
+        ]
     
     def get_jobs_by_location(self, location: str, limit: int = 20) -> List[Dict[str, Any]]:
         """Get jobs filtered by location"""
