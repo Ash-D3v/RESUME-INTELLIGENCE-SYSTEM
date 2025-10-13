@@ -24,7 +24,7 @@ from ats_scorer import ATSScorer
 from job_matcher import JobMatcher
 from skill_analyzer import SkillAnalyzer
 from course_recommender import CourseRecommender
-from ml_enhanced_analyzer import MLEnhancedAnalyzer
+# from ml_enhanced_analyzer import MLEnhancedAnalyzer
 
 app = FastAPI(title="Resume Analysis & Job Matching API", version="1.0.0")
 
@@ -42,7 +42,7 @@ ats_scorer = ATSScorer()
 job_matcher = JobMatcher()
 skill_analyzer = SkillAnalyzer()
 course_recommender = CourseRecommender()
-ml_analyzer = MLEnhancedAnalyzer()
+# ml_analyzer = MLEnhancedAnalyzer()
 
 # Data storage files
 PROCESSED_RESUMES_FILE = "processed_resumes.json"
@@ -729,7 +729,7 @@ async def health_check():
             "job_matcher": job_matcher is not None,
             "skill_analyzer": skill_analyzer is not None,
             "course_recommender": course_recommender is not None,
-            "ml_analyzer": ml_analyzer is not None
+            "ml_analyzer": False  # ml_analyzer is not None
         }
     }
 
